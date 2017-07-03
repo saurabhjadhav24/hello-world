@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Bootstrap 101 Template</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style type="text/css">
+ /* part you need */
+.slide-along-scroll {
+  padding: 20px;
+  background-color: #CCCCCC;
+  transition: top 300ms ease-out;
+  position: relative;
+}
+/* just demo */
+div {  
+  box-sizing: border-box;
+}
+.side-column {
+  float: left;
+  width: 20%;    
+}
+.main-column {
+  padding: 20px;
+  float: right;
+  width: 75%;
+  min-height: 1200px;
+  background-color: #EEEEEE;
+}
+.body {  
+  padding: 20px 0;  
+}
+.body:after {
+  content: ' ';
+  clear: both;
+  display: table;
+}
+.header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #CCCCCC;  
+}
+.footer {
+  padding: 20px;
+  border-top: 2px solid #CCCCCC;
+  min-height: 300px;
+} 
+</style>
+
+</head>
+<body>
+
+
+<div>
+  <div class="header">
+      <h1>Your super-duper website</h1>
+  </div>
+  <div class="body">  
+    <div class="side-column">
+        <!-- part you need -->
+        <div class="slide-along-scroll">
+            Side menu content
+            <ul>
+               <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+               <li>Aliquam tincidunt mauris eu risus.</li>
+               <li>Vestibulum auctor dapibus neque.</li>
+            </ul>         
+        </div>
+    </div>
+    <div class="main-column">
+        Main content area (1200px)
+    </div>
+  </div>
+  <div class="footer">
+      Footer (slide along is limited by it)
+  </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+// SlideAlongScroll
+var SlideAlongScroll = function(el) {
+  var _this = this;
+  this.el = el;
+  // elements original position
+  this.elpos_original = el.parent().offset().top;  
+  // scroller timeout
+  this.scroller_timeout;
+  // scroller calculate function
+  this.scroll = function() {
+  // 20px gap for beauty
+  var windowpos = $(window).scrollTop() + 20;
+  // targeted destination
+  var finaldestination = windowpos - this.elpos_original;
+  // define stopper object and correction amount
+  var stopper = ($('.footer').offset().top); // $(window).height() if you dont need it
+  var stophere = stopper - el.outerHeight() - this.elpos_original - 20;
+  // decide what to do
+  var realdestination = 0;
+  if(windowpos > this.elpos_original) {
+    if(finaldestination >= stophere) {
+      realdestination = stophere;
+    } else {
+      realdestination = finaldestination;
+    }
+    }
+      el.css({'top': realdestination });
+    };
+    // scroll listener
+    $(window).on('scroll', function() {
+    // debounce it
+    clearTimeout(_this.scroller_timeout);
+    // set scroll calculation timeout
+    _this.scroller_timeout = setTimeout(function() { _this.scroll(); }, 300);
+  });
+  // initial position (in case page is pre-scrolled by browser after load)
+  this.scroll();
+};
+// init action, little timeout for smoothness
+$(document).ready(function() {
+  $('.slide-along-scroll').each(function(i, el) {
+    setTimeout(function(el) { new SlideAlongScroll(el); }, 300, $(el));
+  });
+});  
+</script>
+
+</body>
+</html>
